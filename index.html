@@ -1210,8 +1210,53 @@ class AreaCalculator:
         <section>
           <div class="wrap">
             <h3>If We Only Want To Reduce Repeated Code.<br>
-            You Can Consider <b>Mixins</b>.</h3><br>
+            We Can Consider <b>Mixins</b>.</h3><br>
           </div>
+        </section>
+        <section>
+           <div class="wrap">
+             <h4><b>Example I - A General Repr Mixin</b></h4><br>
+             <pre><code>import reprlib
+            
+class ReprLibMixin(object):
+    def __repr__(self):
+        return "<{} {attr}>".format(
+            self.__class__.__name__,
+            attr=" ".join("{}={}".format(k, reprlib.repr(v)) for k, v in sorted(self.__dict__.items())),
+        )
+    
+class Word(ReprLibMixin):
+    def __init__(self, text, sentence_index, article_index, pos_tag):
+        self.text = text
+        self.sentence_index = sentence_index
+        self.article_index = article_index
+        self.pos_tag = pos_tag</code></pre>
+           </div>
+        </section>
+        <section>
+           <div class="wrap">
+             <h4><b>Example II - Comparable Mixin</b></h4><br>
+             <pre><code>class Comparable(object):
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __lt__(self, other):
+        return self <= other and (self != other)
+
+    def __gt__(self, other):
+        return not self <= other
+
+    def __ge__(self, other):
+        return self == other or self > other
+
+class Integer(Comparable):
+    def __init__(self, i):
+        self.i = i
+
+class Char(Comparable):
+    def __init__(self, c):
+        self.c = c</code></pre>
+           </div>
         </section>
         <section>
           <div class="wrap">
